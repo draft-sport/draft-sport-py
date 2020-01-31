@@ -17,7 +17,7 @@ with open(path.join(here, 'VERSION'), encoding='utf-8') as version_file:
     VERSION = version_file.read()
 
 setup(
-    name='nozomi',
+    name='draft-sport',
     version=VERSION,
     description='Draft Sport API Library',
     long_description=LONG_DESCRIPTION,
@@ -32,7 +32,7 @@ setup(
         'Programming Language :: Python :: 3 :: Only',
         'Programming Language :: Python :: 3.6',
         'Programming Language :: Python :: 3.7',
-        'Programming Language :: Python :: 3.8'
+        'Programming Language :: Python :: 3.8',
         'Operating System :: OS Independent',
         'Topic :: Software Development :: Libraries'
     ],
