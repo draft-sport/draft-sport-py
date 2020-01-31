@@ -10,12 +10,15 @@ from draft_sport.security.session import Session
 from typing import Any, Optional, TypeVar
 from urllib.request import HTTPError
 import json
+from draft_sport.ancillary.configuration import Configuration
 
 T = TypeVar('T', bound='ApiRequest')
 
 
 class ApiRequest:
     """A request to a draft_sport-compliant API via HTTP"""
+
+    _DEFAULT_ENDPOINT = 'https://draftrugby.com/api'
 
     def __init__(
         self,
@@ -24,8 +27,12 @@ class ApiRequest:
         data: Optional[Any] = None,
         url_parameters: Optional[URLParameters] = None,
         session: Optional[Session] = None,
-        api_endpoint: str = 'https://draftrugby.blinkybeach.com/api'
+        configuration: Optional[Configuration] = None
     ) -> None:
+
+        api_endpoint = self._DEFAULT_ENDPOINT
+        if configuration is not None:
+            api_endpoint = configuration.api_endpoint
 
         url = api_endpoint + path
         if url_parameters is not None:
