@@ -3,7 +3,7 @@ Draft Sport Python
 Player Points Module
 author: hugh@blinkybeach.com
 """
-from nozomi import Decodable
+from nozomi import Decodable, Immutable
 from draft_sport.fantasy.scores.player.round import Round
 from typing import TypeVar, Type, Any, List
 
@@ -26,6 +26,11 @@ class Points(Decodable):
         self._rounds = rounds
 
         return
+
+    average_points = Immutable(lambda s: s._average_points)
+    total_points = Immutable(lambda s: s._total_points)
+    points_last_round = Immutable(lambda s: s._points_last_round)
+    rounds = Immutable(lambda s: s._rounds)
 
     @classmethod
     def decode(cls: Type[T], data: Any) -> T:

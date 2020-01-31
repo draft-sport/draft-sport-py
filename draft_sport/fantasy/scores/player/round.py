@@ -5,7 +5,7 @@ author: hugh@blinkybeach.com
 """
 from draft_sport.fantasy.scores.player.score import Score
 from typing import List, TypeVar, Type, Any
-from nozomi import Decodable
+from nozomi import Decodable, Immutable
 
 T = TypeVar('T', bound='Round')
 
@@ -16,17 +16,20 @@ class Round(Decodable):
     def __init__(
         self,
         sequence: int,
-        points: List[Score]
+        scores: List[Score]
     ) -> None:
 
         self._round_sequence = sequence
-        self._points = points
+        self._scores = scores
 
         return
+
+    round_sequence = Immutable(lambda s: s._round_sequence)
+    scores = Immutable(lambda s: s._points)
 
     @classmethod
     def decode(cls: Type[T], data: Any) -> T:
         return cls(
             sequence=data['round_sequence'],
-            points=Score.decode_many(data['scores'])
+            scores=Score.decode_many(data['scores'])
         )

@@ -54,6 +54,10 @@ class Player(Decodable):
     points = Immutable(lambda s: s._points)
     query_time = Immutable(lambda s: s._query_time)
 
+    query_time_seconds = Immutable(
+        lambda s: str(s._query_time / 1000)
+    )
+
     @classmethod
     def decode(cls: Type[T], data: Any) -> T:
         return cls(

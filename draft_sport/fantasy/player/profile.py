@@ -31,6 +31,8 @@ class Profile(Decodable):
     public_id = Immutable(lambda s: s._public_id)
     team_name = Immutable(lambda s: s._team_name)
 
+    full_name = Immutable(lambda s: s._first_name + s._last_name)
+
     @classmethod
     def decode(cls: Type[T], data: Any) -> T:
         return cls(
