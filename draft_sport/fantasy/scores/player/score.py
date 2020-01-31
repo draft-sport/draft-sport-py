@@ -3,7 +3,7 @@ Draft Sport Python
 Point Score Module
 author: hugh@blinkybeach.com
 """
-from nozomi import Decodable
+from nozomi import Decodable, Immutable
 from typing import TypeVar, Type, Any
 
 T = TypeVar('T', bound='Score')
