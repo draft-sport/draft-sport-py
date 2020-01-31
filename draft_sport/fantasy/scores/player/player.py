@@ -55,7 +55,7 @@ class Player(Decodable):
     query_time = Immutable(lambda s: s._query_time)
 
     query_time_seconds = Immutable(
-        lambda s: str(s._query_time / 1000)
+        lambda s: str(int(s._query_time) / 1000)
     )
 
     @classmethod
