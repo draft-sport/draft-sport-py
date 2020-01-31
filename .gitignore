@@ -11,3 +11,6 @@ __py
 .vscode/*
 configuration.json
 *.DS_Store
+dist/*
+*.egg-info
+deploy
