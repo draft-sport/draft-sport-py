@@ -23,6 +23,9 @@ class Score(Decodable):
 
         return
 
+    value = Immutable(lambda s: s._score)
+    fantasy_metric_name = Immutable(lambda s: s._fantasy_metric_name)
+
     @classmethod
     def decode(cls: Type[T], data: Any) -> T:
         return cls(
