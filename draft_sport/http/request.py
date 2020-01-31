@@ -34,6 +34,8 @@ class ApiRequest:
         if configuration is not None:
             api_endpoint = configuration.api_endpoint
 
+        if not path[0] == '/':
+            raise ValueError('Path must begin with \'/\'')
         url = api_endpoint + path
         if url_parameters is not None:
             url = url_parameters.add_to(url)

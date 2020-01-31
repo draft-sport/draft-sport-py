@@ -19,8 +19,8 @@ T = TypeVar('T', bound='Player')
 
 class Player(Decodable):
 
-    _PATH = 'fantasy/player'
-    _LIST_PATH = 'fantasy/player/list'
+    _PATH = '/fantasy/player'
+    _LIST_PATH = '/fantasy/player/list'
 
     def __init__(
         self,
