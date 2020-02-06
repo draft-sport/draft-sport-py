@@ -29,6 +29,6 @@ class Score(Decodable):
     @classmethod
     def decode(cls: Type[T], data: Any) -> T:
         return cls(
-            fantasy_metric_name=data['stat_name'],
-            score=data['points_value']
+            fantasy_metric_name=data['fantasy_metric_name'],
+            score=data['score']
         )
