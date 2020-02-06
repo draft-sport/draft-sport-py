@@ -3,7 +3,7 @@ Draft Sport Python
 Human Module
 author: hugh@blinkybeach.com
 """
-from nozomi import Immutable, Configuration, Agent
+from nozomi import Immutable, Configuration, Agent, RequestCredentials
 from nozomi import Decodable
 from typing import Optional, Type, TypeVar, Any
 from nozomi import URLParameter, URLParameters, HTTPMethod, ApiRequest
@@ -32,7 +32,7 @@ class Human(Decodable):
     def retrieve(
         cls: Type[T],
         public_id: str,
-        on_behalf_of: Agent,
+        credentials: RequestCredentials,
         configuration: Configuration
     ) -> Optional[T]:
         """
@@ -48,9 +48,9 @@ class Human(Decodable):
             path=cls._PATH,
             method=HTTPMethod.GET,
             configuration=configuration,
-            on_behalf_of_agent=on_behalf_of,
             data=None,
-            url_parameters=parameters
+            url_parameters=parameters,
+            credentials=credentials
         )
 
         return cls.optionally_decode(request.response_data)

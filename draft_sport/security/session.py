@@ -5,7 +5,7 @@ author: hugh@blinkybeach.com
 """
 from nozomi.app import Session as NozomiAppSession
 from nozomi import NozomiTime, Immutable, Configuration, Agent
-from nozomi import StandaloneAgent
+from nozomi import StandaloneAgent, RequestCredentials
 from typing import Optional, Type, TypeVar, Any
 from draft_sport.security.perspective import Perspective
 from nozomi import URLParameter, URLParameters, HTTPMethod, ApiRequest
@@ -55,7 +55,7 @@ class Session(NozomiAppSession):
 
     def delete(
         self,
-        on_behalf_of: Agent,
+        credentials: RequestCredentials,
         configuration: Configuration
     ) -> None:
         """Delete this Session, AKA logout the user"""
@@ -66,7 +66,7 @@ class Session(NozomiAppSession):
             path=self.API_PATH,
             method=HTTPMethod.DELETE,
             configuration=configuration,
-            on_behalf_of_agent=on_behalf_of,
+            credentials=credentials,
             data=None,
             url_parameters=parameters
         )
@@ -76,7 +76,7 @@ class Session(NozomiAppSession):
     def retrieve(
         cls: Type[T],
         session_id: str,
-        on_behalf_of: Agent,
+        credentials: RequestCredentials,
         configuration: Configuration
     ) -> Optional[T]:
         """Return a Session with the given Session ID, if it exists"""
@@ -90,7 +90,7 @@ class Session(NozomiAppSession):
             path=cls.API_PATH,
             method=HTTPMethod.GET,
             configuration=configuration,
-            on_behalf_of_agent=on_behalf_of,
+            credentials=credentials,
             data=None,
             url_parameters=parameters
         )

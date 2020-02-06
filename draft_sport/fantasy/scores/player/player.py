@@ -4,11 +4,9 @@ Fantasy Player Score Module
 Author: hugh@blinkybeach.com
 """
 from nozomi import Decodable, HTTPMethod, URLParameter, URLParameters
-from nozomi import Immutable
-from draft_sport.http.request import ApiRequest
+from nozomi import Immutable, ApiRequest, RequestCredentials
 from draft_sport.fantasy.player.profile import Profile
 from typing import Type, TypeVar, Any, Optional, List
-from draft_sport.security.session import Session
 from draft_sport.ancillary.configuration import Configuration
 from draft_sport.fantasy.scores.player.order_by import OrderBy
 from draft_sport.fantasy.scores.player.points import Points
@@ -76,7 +74,7 @@ class Player(Decodable):
         cls: Type[T],
         public_id: str,
         season_id: str,
-        session: Optional[Session],
+        credentials: Optional[RequestCredentials],
         configuration: Optional[Configuration]
     ) -> Optional[T]:
 
@@ -90,7 +88,7 @@ class Player(Decodable):
             method=HTTPMethod.GET,
             data=None,
             url_parameters=parameters,
-            session=session,
+            credentials=credentials,
             configuration=configuration
         )
 
@@ -105,7 +103,7 @@ class Player(Decodable):
         order_by: OrderBy = OrderBy.TOTAL_SEASON_POINTS,
         order: Order = Order.DESCENDING,
         name_fragment: Optional[str] = None,
-        session: Optional[Session] = None,
+        credentials: Optional[RequestCredentials] = None,
         configuration: Optional[Configuration] = None
     ) -> List[T]:
 
@@ -125,7 +123,7 @@ class Player(Decodable):
             method=HTTPMethod.GET,
             data=None,
             url_parameters=parameters,
-            session=session,
+            credentials=credentials,
             configuration=configuration
         )
 
