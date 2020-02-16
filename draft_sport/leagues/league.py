@@ -46,12 +46,12 @@ class League(Decodable):
         """
         Optionally return a League with the given public ID, if it exists
         """
-        
+
         assert isinstance(public_id, str)
 
         parameters = URLParameters([
             URLParameter('league', public_id),
-            URLParameter('season', '2020')  ## MVP hardcode
+            URLParameter('season', '2020')  # MVP hardcode
         ])
 
         request = ApiRequest(
