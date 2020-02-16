@@ -34,6 +34,9 @@ class Perspective(NozomiPerspective):
             return Constants.CUSTOMER
         raise RuntimeError('Unknown Perspective ID')
 
+    def __hash__(self) -> int:
+        return hash(self._perspective_id)
+
 
 class Constants:
 

@@ -3,7 +3,7 @@ Draft Sport Python
 Human Module
 author: hugh@blinkybeach.com
 """
-from nozomi import Immutable, Configuration, Agent, RequestCredentials
+from nozomi import Immutable, Configuration, RequestCredentials
 from nozomi import Decodable
 from typing import Optional, Type, TypeVar, Any
 from nozomi import URLParameter, URLParameters, HTTPMethod, ApiRequest
