@@ -1,6 +1,6 @@
 """
 Draft Sport
-League Module
+Invitation Module
 author: hugh@blinkybeach.com
 """
 from nozomi import Immutable, Configuration, RequestCredentials
@@ -9,50 +9,47 @@ from typing import Optional, Type, TypeVar, Any, List
 from nozomi import URLParameter, URLParameters, HTTPMethod, ApiRequest
 from draft_sport.leagues.team import Team
 
-T = TypeVar('T', bound='League')
+T = TypeVar('T', bound='Inviation')
 
 
-class League(Decodable):
+class Invitation(Decodable):
 
-    _PATH = '/league'
+    _PATH = '/league/manager/invitation'
 
     def __init__(
         self,
-        public_id: str,
-        teams: List[Team],
-        commissioner_id: str,
-        name: str,
-        created: NozomiTime
+        created: NozomiTime,
+        league_name: str,
+        league_id: str,
+        token: str
     ) -> None:
 
-        self._public_id = public_id
-        self._teams = teams
-        self._commissioner_id = commissioner_id
-        self._name = name
         self._created = created
+        self._league_name = league_name
+        self._league_id = league_id
+        self._token = token
 
         return
 
-    name = Immutable(lambda s: s._name)
-    public_id = Immutable(lambda s: s._public_id)
+    created = Immutable(lambda s: s._created)
+    league_name = Immutable(lambda s: s._league_name)
+    league_id = Immutable(lambda s: s._league_id)
+    token = Immutable(lambda s: s._token)
 
     @classmethod
     def retrieve(
         cls: Type[T],
-        public_id: str,
+        token: str,
         credentials: RequestCredentials,
         configuration: Configuration
     ) -> Optional[T]:
         """
-        Optionally return a League with the given public ID, if it exists
+        Optionally return an Invitation with the given token if it exists
         """
 
-        assert isinstance(public_id, str)
+        assert isinstance(token, str)
 
-        parameters = URLParameters([
-            URLParameter('league', public_id),
-            URLParameter('season', '2020')  # MVP hardcode
-        ])
+        parameters = URLParameters([URLParameter('token', token)])
 
         request = ApiRequest(
             path=cls._PATH,
@@ -68,9 +65,8 @@ class League(Decodable):
     @classmethod
     def decode(cls: Type[T], data: Any) -> T:
         return cls(
-            public_id=data['public_id'],
-            teams=Team.decode_many(data['teams']),
-            commissioner_id=data['commissioner_id'],
-            name=data['name'],
-            created=NozomiTime.decode(data['created'])
+            created=NozomiTime.decode(data['created']),
+            token=data['token'],
+            league_id=data['league_public_id'],
+            league_name=data['league_name']
         )

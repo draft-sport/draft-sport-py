@@ -1,6 +1,7 @@
 from draft_sport.leagues.league import League
 from draft_sport.leagues.pick import Player
 from draft_sport.leagues.team import Team
+from draft_sport.leagues.invitation import Invitation
 
 from draft_sport.fantasy.scores.player.player import Player
 from draft_sport.fantasy.scores.player.order_by import OrderBy
