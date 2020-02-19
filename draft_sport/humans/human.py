@@ -27,6 +27,8 @@ class Human(Decodable):
         return
 
     display_name: str = Immutable(lambda s: s._email.split('@')[0])
+    public_id: str = Immutable(lambda s: s._public_id)
+    email: str = Immutable(lambda s: s._email)
 
     @classmethod
     def retrieve(
