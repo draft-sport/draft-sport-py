@@ -21,13 +21,17 @@ class Invitation(Decodable):
         created: NozomiTime,
         league_name: str,
         league_id: str,
-        token: str
+        token: str,
+        invitee_id: Optional[str],
+        accepted: bool
     ) -> None:
 
         self._created = created
         self._league_name = league_name
         self._league_id = league_id
         self._token = token
+        self._invitee_id = invitee_id
+        self._accepted = accepted
 
         return
 
@@ -35,6 +39,8 @@ class Invitation(Decodable):
     league_name = Immutable(lambda s: s._league_name)
     league_id = Immutable(lambda s: s._league_id)
     token = Immutable(lambda s: s._token)
+    invitee_id = Immutable(lambda s: s._invitee_id)
+    has_been_accepted = Immutable(lambda s: s._accepted)
 
     @classmethod
     def retrieve(
@@ -68,5 +74,7 @@ class Invitation(Decodable):
             created=NozomiTime.decode(data['created']),
             token=data['token'],
             league_id=data['league_public_id'],
-            league_name=data['league_name']
+            league_name=data['league_name'],
+            invitee_id=data['invitee_public_id'],
+            accepted=data['accepted']
         )
