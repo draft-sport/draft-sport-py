@@ -35,6 +35,7 @@ class League(Decodable):
 
     name = Immutable(lambda s: s._name)
     public_id = Immutable(lambda s: s._public_id)
+    teams = Immutable(lambda s: s._teams)
 
     @classmethod
     def retrieve(
