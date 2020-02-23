@@ -4,7 +4,7 @@ Pick Module
 author: hugh@blinkybeach.com
 """
 from draft_sport.fantasy.scores.player.player import Player
-from nozomi import Decodable, NozomiTime
+from nozomi import Decodable, NozomiTime, Immutable
 from typing import TypeVar, Type, Any
 
 T = TypeVar('T', bound='Pick')
@@ -26,6 +26,8 @@ class Pick(Decodable):
         self._league_id = league_id
 
         return
+
+    player = Immutable(lambda s: s._player)
 
     @classmethod
     def decode(cls: Type[T], data: Any) -> T:
