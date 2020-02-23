@@ -4,13 +4,16 @@ Team Module
 author: hugh@blinkybeach.com
 """
 from typing import List, Any, TypeVar, Type, Optional
-from nozomi import Immutable, Decodable
+from nozomi import Immutable, Decodable, RequestCredentials, ApiRequest
+from nozomi import Configuration, URLParameter, URLParameters, HTTPMethod
 from draft_sport.leagues.pick import Pick
 
 T = TypeVar('T', bound='Team')
 
 
 class Team(Decodable):
+
+    _PATH = '/league/team'
 
     def __init__(
         self,
@@ -31,7 +34,7 @@ class Team(Decodable):
 
     league_id = Immutable(lambda s: s._league_id)
     picks = Immutable(lambda s: s._picks)
-    manager_id = Immutable(lambda s: s._picks)
+    manager_id = Immutable(lambda s: s._manager_id)
     manager_display_name = Immutable(lambda s: s._manager_display_name)
     name = Immutable(lambda s: s._name)
 
@@ -44,3 +47,32 @@ class Team(Decodable):
             manager_display_name=data['manager_display_name'],
             name=data['name']
         )
+
+    @classmethod
+    def retrieve(
+        cls: Type[T],
+        league_id: str,
+        manager_id: str,
+        credentials: RequestCredentials,
+        configuration: Configuration
+    ) -> Optional[T]:
+        """
+        Return a Team in the supplied League, managed by the supplied Manager,
+        if it exists.
+        """
+
+        parameters = URLParameters([
+            URLParameter('league', league_id),
+            URLParameter('manager', manager_id)
+        ])
+
+        request = ApiRequest(
+            path=cls._PATH,
+            method=HTTPMethod.GET,
+            configuration=configuration,
+            data=None,
+            url_parameters=parameters,
+            credentials=credentials
+        )
+
+        return cls.optionally_decode(request.response_data)
