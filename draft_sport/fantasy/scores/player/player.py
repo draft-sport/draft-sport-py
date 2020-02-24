@@ -43,6 +43,8 @@ class Player(Decodable):
 
         return
 
+    public_id = Immutable(lambda s: s._profile.public_id)
+
     profile = Immutable(lambda s: s._profile)
     limit = Immutable(lambda s: s._limit)
     offset = Immutable(lambda s: s._offset)
