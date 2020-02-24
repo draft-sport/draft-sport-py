@@ -21,7 +21,8 @@ class Team(Decodable):
         picks: List[Pick],
         manager_id: str,
         manager_display_name: str,
-        name: Optional[str]
+        name: Optional[str],
+        total_points: int
     ) -> None:
 
         self._league_id = league_id
@@ -29,6 +30,7 @@ class Team(Decodable):
         self._manager_id = manager_id
         self._manager_display_name = manager_display_name
         self._name = name
+        self._total_points = total_points
 
         return
 
@@ -37,6 +39,7 @@ class Team(Decodable):
     manager_id = Immutable(lambda s: s._manager_id)
     manager_display_name = Immutable(lambda s: s._manager_display_name)
     name = Immutable(lambda s: s._name)
+    total_points = Immutable(lambda s: s._total_points)
 
     @classmethod
     def decode(cls: Type[T], data: Any) -> T:
@@ -45,7 +48,8 @@ class Team(Decodable):
             picks=Pick.decode_many(data['picks']),
             manager_id=data['manager_id'],
             manager_display_name=data['manager_display_name'],
-            name=data['name']
+            name=data['name'],
+            total_points=data['total_points']
         )
 
     @classmethod
