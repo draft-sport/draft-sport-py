@@ -23,7 +23,8 @@ class Invitation(Decodable):
         league_id: str,
         token: str,
         invitee_id: Optional[str],
-        accepted: bool
+        accepted: bool,
+        associated_email: Optional[str]
     ) -> None:
 
         self._created = created
@@ -32,6 +33,7 @@ class Invitation(Decodable):
         self._token = token
         self._invitee_id = invitee_id
         self._accepted = accepted
+        self._associated_email = associated_email
 
         return
 
@@ -41,6 +43,7 @@ class Invitation(Decodable):
     token = Immutable(lambda s: s._token)
     invitee_id = Immutable(lambda s: s._invitee_id)
     has_been_accepted = Immutable(lambda s: s._accepted)
+    associated_email = Immutable(lambda s: s._associated_email)
 
     @classmethod
     def retrieve(
@@ -76,5 +79,6 @@ class Invitation(Decodable):
             league_id=data['league_public_id'],
             league_name=data['league_name'],
             invitee_id=data['invitee_public_id'],
-            accepted=data['accepted']
+            accepted=data['accepted'],
+            associated_email=data['associated_email']
         )
