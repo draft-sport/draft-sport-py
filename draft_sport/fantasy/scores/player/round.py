@@ -27,6 +27,8 @@ class Round(Decodable):
     round_sequence = Immutable(lambda s: s._round_sequence)
     scores = Immutable(lambda s: s._scores)
 
+    total_points = Immutable(lambda s: sum([k.value for k in s._scores]))
+
     @classmethod
     def decode(cls: Type[T], data: Any) -> T:
         return cls(
