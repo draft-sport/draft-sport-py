@@ -25,7 +25,9 @@ class Session(NozomiAppSession):
         agent: Agent,
         created: NozomiTime,
         last_utilised: NozomiTime,
-        perspective: Perspective
+        perspective: Perspective,
+        requires_challenge: bool,
+        has_completed_challenge: bool
     ) -> None:
 
         assert isinstance(session_id, str)
@@ -35,6 +37,8 @@ class Session(NozomiAppSession):
         assert isinstance(created, NozomiTime)
         assert isinstance(last_utilised, NozomiTime)
         assert isinstance(perspective, Perspective)
+        assert isinstance(requires_challenge, bool)
+        assert isinstance(has_completed_challenge, bool)
 
         self._session_id = session_id
         self._session_key = session_key
@@ -43,6 +47,8 @@ class Session(NozomiAppSession):
         self._created = created
         self._last_utilised = last_utilised
         self._perspective = perspective
+        self._requires_challenge = requires_challenge
+        self._has_completed_challenge = has_completed_challenge
 
         return
 
@@ -50,6 +56,12 @@ class Session(NozomiAppSession):
     perspective: Perspective = Immutable(lambda s: s._perspective)
     api_key: str = Immutable(lambda s: s._api_key)
     session_id: int = Immutable(lambda s: s._session_id)
+    has_completed_challenge: bool = Immutable(
+        lambda s: s._has_completed_challenge
+    )
+    requires_challenge: bool = Immutable(
+        lambda s: s._requires_challenge
+    )
 
     agent_id = Immutable(lambda s: s._agent.agent_id)
 
@@ -126,5 +138,7 @@ class Session(NozomiAppSession):
             StandaloneAgent.decode(data),
             NozomiTime.decode(data['created']),
             NozomiTime.decode(data['last_utilised']),
-            Perspective.with_id(data['perspective'])
+            Perspective.with_id(data['perspective']),
+            requires_challenge=data['requires_challenge'],
+            has_completed_challenge=data['has_completed_challenge']
         )
