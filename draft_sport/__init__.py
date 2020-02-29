@@ -16,3 +16,6 @@ from draft_sport.security.session import Session
 from draft_sport.security.perspective import Perspective
 
 from draft_sport.humans.human import Human
+
+from draft_sport.communication.challenge import Challenge
+from draft_sport.communication.method import CommunicationMethod

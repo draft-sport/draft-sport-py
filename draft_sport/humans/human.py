@@ -7,6 +7,7 @@ from nozomi import Immutable, Configuration, RequestCredentials
 from nozomi import Decodable
 from typing import Optional, Type, TypeVar, Any
 from nozomi import URLParameter, URLParameters, HTTPMethod, ApiRequest
+from draft_sport.communication.method import CommunicationMethod
 
 T = TypeVar('T', bound='Human')
 
@@ -18,7 +19,7 @@ class Human(Decodable):
     def __init__(
         self,
         public_id: str,
-        email: str
+        email: CommunicationMethod
     ) -> None:
 
         self._email = email
@@ -28,7 +29,7 @@ class Human(Decodable):
 
     display_name: str = Immutable(lambda s: s._email.split('@')[0])
     public_id: str = Immutable(lambda s: s._public_id)
-    email: str = Immutable(lambda s: s._email)
+    email: CommunicationMethod = Immutable(lambda s: s._email)
 
     @classmethod
     def retrieve(
@@ -61,5 +62,5 @@ class Human(Decodable):
     def decode(cls: Type[T], data: Any) -> T:
         return cls(
             public_id=data['public_id'],
-            email=data['email']
+            email=CommunicationMethod.decode(data['email'])
         )
