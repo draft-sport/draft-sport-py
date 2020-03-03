@@ -27,7 +27,7 @@ class Human(Decodable):
 
         return
 
-    display_name: str = Immutable(lambda s: s._email.split('@')[0])
+    display_name: str = Immutable(lambda s: s._email.body.split('@')[0])
     public_id: str = Immutable(lambda s: s._public_id)
     email: CommunicationMethod = Immutable(lambda s: s._email)
 
