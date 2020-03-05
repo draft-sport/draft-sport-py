@@ -19,3 +19,8 @@ from draft_sport.humans.human import Human
 
 from draft_sport.communication.challenge import Challenge
 from draft_sport.communication.method import CommunicationMethod
+
+from draft_sport.store.denomination import Denomination
+from draft_sport.store.offer import Offer
+from draft_sport.store.product import Product
+from draft_sport.store.price import Price
