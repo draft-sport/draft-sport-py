@@ -18,21 +18,25 @@ class Challenge(Decodable):
     def __init__(
         self,
         expiration: NozomiTime,
-        completed: Optional[NozomiTime]
+        completed: Optional[NozomiTime],
+        is_expired: bool,
     ) -> None:
 
         self._expiration = expiration
+        self._is_expired = is_expired
         self._completed = completed
 
         return
 
     is_completed = Immutable(lambda s: s._completed is not None)
+    is_expired = Immutable(lambda s: s._is_expired)
 
     @classmethod
     def decode(cls: Type[T], data: Any) -> T:
         return cls(
             expiration=NozomiTime.decode(data['expiration']),
-            completed=NozomiTime.optionally_decode(data['completed'])
+            completed=NozomiTime.optionally_decode(data['completed']),
+            is_expired=data['is_expired']
         )
 
     @classmethod
