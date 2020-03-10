@@ -6,7 +6,7 @@ author: hugh@blinkybeach.com
 from nozomi import Decodable, Immutable
 from draft_sport.fantasy.scores.player.round import Round
 from draft_sport.fantasy.scores.player.score import Score
-from typing import TypeVar, Type, Any, List, Dict, Set
+from typing import TypeVar, Type, Any, List, Dict, Set, Optional
 
 T = TypeVar('T', bound='Points')
 
