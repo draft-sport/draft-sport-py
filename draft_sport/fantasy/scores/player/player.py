@@ -4,18 +4,19 @@ Fantasy Player Score Module
 Author: hugh@blinkybeach.com
 """
 from nozomi import Decodable, HTTPMethod, URLParameter, URLParameters
-from nozomi import Immutable, ApiRequest, RequestCredentials
+from nozomi import Immutable, ApiRequest, RequestCredentials, Encodable
 from draft_sport.fantasy.player.profile import Profile
 from typing import Type, TypeVar, Any, Optional, List
 from draft_sport.ancillary.configuration import Configuration
 from draft_sport.fantasy.scores.player.order_by import OrderBy
 from draft_sport.fantasy.scores.player.points import Points
 from draft_sport.data.order import Order
+from typing import Dict
 
 T = TypeVar('T', bound='Player')
 
 
-class Player(Decodable):
+class Player(Decodable, Encodable):
 
     _PATH = '/fantasy/player'
     _LIST_PATH = '/fantasy/player/list'
@@ -55,8 +56,20 @@ class Player(Decodable):
     query_time = Immutable(lambda s: s._query_time)
 
     query_time_seconds = Immutable(
-        lambda s: str(int(s._query_time) / 1000)
+        lambda s: str(int(s._query_time) / 1000000)
     )
+
+    def encode(self) -> Dict[str, Any]:
+        return {
+            'player': self._profile.encode(),
+            'limit': self._limit,
+            'offset': self._offset,
+            'sequence': self._sequence,
+            'requesting_agent_id': self._requesting_agent_id,
+            'points': self._points.encode(),
+            'query_time': self._query_time,
+            'query_count': self._query_coun
+        }
 
     @classmethod
     def decode(cls: Type[T], data: Any) -> T:
@@ -102,11 +115,11 @@ class Player(Decodable):
         season_id: str,
         offset: int,
         limit: int,
+        configuration: Configuration,
         order_by: OrderBy = OrderBy.TOTAL_SEASON_POINTS,
         order: Order = Order.DESCENDING,
         name_fragment: Optional[str] = None,
-        credentials: Optional[RequestCredentials] = None,
-        configuration: Optional[Configuration] = None
+        credentials: Optional[RequestCredentials] = None
     ) -> List[T]:
 
         parameters = URLParameters([
