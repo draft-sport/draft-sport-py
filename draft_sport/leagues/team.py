@@ -7,6 +7,8 @@ from typing import List, Any, TypeVar, Type, Optional
 from nozomi import Immutable, Decodable, RequestCredentials, ApiRequest
 from nozomi import Configuration, URLParameter, URLParameters, HTTPMethod
 from draft_sport.leagues.pick import Pick
+from draft_sport.leagues.composition import Composition
+
 
 T = TypeVar('T', bound='Team')
 
@@ -21,6 +23,7 @@ class Team(Decodable):
         picks: List[Pick],
         manager_id: str,
         manager_display_name: str,
+        composition: Composition,
         name: Optional[str],
         total_points: int
     ) -> None:
