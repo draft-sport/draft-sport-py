@@ -59,6 +59,10 @@ class Player(Decodable, Encodable):
         lambda s: str(int(s._query_time) / 1000000)
     )
 
+    def has_position_with_name(self, name: str) -> bool:
+        """Return True if this Player has the named position"""
+        return self._profile.position_name == name
+
     def encode(self) -> Dict[str, Any]:
         return {
             'player': self._profile.encode(),
