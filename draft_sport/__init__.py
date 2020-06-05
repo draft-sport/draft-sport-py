@@ -16,6 +16,7 @@ from draft_sport.data.order import Order
 
 from draft_sport.security.session import Session
 from draft_sport.security.perspective import Perspective
+from draft_sport.security.secret_reset_request import SecretResetRequest
 
 from draft_sport.humans.human import Human
 
