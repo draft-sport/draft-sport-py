@@ -16,10 +16,10 @@ from typing import Dict
 T = TypeVar('T', bound='Player')
 
 
-class Player(Decodable, Encodable):
+class ScoreCard(Decodable, Encodable):
 
-    _PATH = '/fantasy/player'
-    _LIST_PATH = '/fantasy/player/list'
+    _PATH = '/fantasy/score-card'
+    _LIST_PATH = '/fantasy/score-card/list'
 
     def __init__(
         self,
