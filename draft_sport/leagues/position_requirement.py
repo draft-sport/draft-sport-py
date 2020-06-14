@@ -1,15 +1,15 @@
 """
 Draft Sport
-Requirement Module
+Position Requirement Module
 author: hugh@blinkybeach.com
 """
 from nozomi import Immutable, Decodable
 from typing import Type, TypeVar, Any
 
-T = TypeVar('T', bound='Requirement')
+T = TypeVar('T', bound='PositionRequirement')
 
 
-class Requirement(Decodable):
+class PositionRequirement(Decodable):
 
     def __init__(
         self,
