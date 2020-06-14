@@ -10,6 +10,7 @@ from typing import Type, TypeVar, Any, Optional, List
 from draft_sport.ancillary.configuration import Configuration
 from draft_sport.fantasy.scores.player.order_by import OrderBy
 from draft_sport.fantasy.scores.player.points import Points
+from draft_sport.universe.position.category import PositionCategory
 from draft_sport.data.order import Order
 from typing import Dict
 
@@ -62,6 +63,10 @@ class ScoreCard(Decodable, Encodable):
     def has_position_with_name(self, name: str) -> bool:
         """Return True if this Player has the named position"""
         return self._profile.position_name == name
+
+    def has_position_in_category(self, category: PositionCategory) -> bool:
+        """Return True if this Player has a position in the supplied category"""
+        return category in self._profile.position.categories
 
     def encode(self) -> Dict[str, Any]:
         return {
