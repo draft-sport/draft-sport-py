@@ -5,7 +5,7 @@ author: hugh@blinkybeach.com
 """
 from nozomi import Decodable, Immutable
 from draft_sport.fantasy.position.position import Position
-from typing import TypeVar, Type, Any
+from typing import TypeVar, Type, Any, Optional
 
 T = TypeVar('T', bound='Profile')
 
@@ -16,7 +16,7 @@ class Profile(Decodable):
         self,
         first_name: str,
         last_name: str,
-        position: Position,
+        position: Optional[Position],
         public_id: str,
         team_name: str
     ) -> None:
@@ -33,7 +33,9 @@ class Profile(Decodable):
     last_name = Immutable(lambda s: s._last_name)
     public_id = Immutable(lambda s: s._public_id)
     position = Immutable(lambda s: s._position)
-    position_name = Immutable(lambda s: s._position.name)
+    position_name = Immutable(
+        lambda s: s._position.name if s._position else None
+    )
     team_name = Immutable(lambda s: s._team_name)
 
     full_name = Immutable(lambda s: s._first_name + ' ' + s._last_name)
@@ -43,7 +45,7 @@ class Profile(Decodable):
         return cls(
             first_name=data['first_name'],
             last_name=data['last_name'],
-            position=Position.decode(data['position']),
+            position=Position.optionally_decode(data['position']),
             public_id=data['public_id'],
             team_name=data['team_name']
         )
