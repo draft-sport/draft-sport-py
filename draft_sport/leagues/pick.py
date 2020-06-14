@@ -22,7 +22,7 @@ class Pick(Decodable):
 
         self._created = created
         self._manager_id = manager_id
-        self._score_card = ScoreCard
+        self._score_card = score_card
         self._league_id = league_id
 
         return
@@ -34,6 +34,6 @@ class Pick(Decodable):
         return cls(
             created=NozomiTime.decode(data['created']),
             manager_id=data['manager_id'],
-            score_card=ScoreCard.decode(data['ScoreCard']),
+            score_card=ScoreCard.decode(data['score_card']),
             league_id=data['league_id']
         )
