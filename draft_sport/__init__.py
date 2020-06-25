@@ -10,6 +10,10 @@ from draft_sport.fantasy.scores.player.round import Round
 from draft_sport.fantasy.scores.player.score import Score
 from draft_sport.fantasy.player.profile import Profile
 from draft_sport.fantasy.position.position import Position
+from draft_sport.fantasy.season.season import Season
+from draft_sport.fantasy.season.constants import SeasonConstants
+from draft_sport.fantasy.competition.competition import Competition
+from draft_sport.fantasy.competition.constants import CompetitionConstants
 
 from draft_sport.universe.position.category import PositionCategory
 

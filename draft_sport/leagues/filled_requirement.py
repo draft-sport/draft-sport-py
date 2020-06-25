@@ -55,5 +55,5 @@ class FilledRequirement:
 
         if isinstance(self._requirement, PositionRequirement):
             return self._requirement.position_name
-    
+
         raise TypeError

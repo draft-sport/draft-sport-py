@@ -6,6 +6,7 @@ Author: hugh@blinkybeach.com
 from nozomi import Decodable, HTTPMethod, URLParameter, URLParameters
 from nozomi import Immutable, ApiRequest, RequestCredentials, Encodable
 from draft_sport.fantasy.player.profile import Profile
+from draft_sport.fantasy.season.season import Season
 from typing import Type, TypeVar, Any, Optional, List
 from draft_sport.ancillary.configuration import Configuration
 from draft_sport.fantasy.scores.player.order_by import OrderBy
@@ -25,6 +26,7 @@ class ScoreCard(Decodable, Encodable):
     def __init__(
         self,
         profile: Profile,
+        season_id: str,
         limit: int,
         offset: int,
         query_count: int,
@@ -35,6 +37,7 @@ class ScoreCard(Decodable, Encodable):
     ) -> None:
 
         self._profile = profile
+        self._season_id = season_id
         self._limit = limit
         self._offset = offset
         self._query_count = query_count
@@ -48,6 +51,7 @@ class ScoreCard(Decodable, Encodable):
     public_id = Immutable(lambda s: s._profile.public_id)
 
     profile = Immutable(lambda s: s._profile)
+    season_id = Immutable(lambda s: s._season_id)
     limit = Immutable(lambda s: s._limit)
     offset = Immutable(lambda s: s._offset)
     query_count = Immutable(lambda s: s._query_count)
@@ -84,6 +88,7 @@ class ScoreCard(Decodable, Encodable):
     def decode(cls: Type[T], data: Any) -> T:
         return cls(
             profile=Profile.decode(data['player']),
+            season_id=data['fantasy_season_id'],
             limit=data['limit'],
             offset=data['offset'],
             query_count=data['query_count'],
@@ -97,14 +102,14 @@ class ScoreCard(Decodable, Encodable):
     def retrieve(
         cls: Type[T],
         public_id: str,
-        season_id: str,
+        season: Season,
         credentials: Optional[RequestCredentials],
         configuration: Optional[Configuration]
     ) -> Optional[T]:
 
         parameters = URLParameters([
             URLParameter('public_id', public_id),
-            URLParameter('season', season_id)
+            URLParameter('season', season.public_id)
         ])
 
         request = ApiRequest(
@@ -121,7 +126,7 @@ class ScoreCard(Decodable, Encodable):
     @classmethod
     def retrieve_many(
         cls: Type[T],
-        season_id: str,
+        season: Season,
         offset: int,
         limit: int,
         configuration: Configuration,
@@ -132,7 +137,7 @@ class ScoreCard(Decodable, Encodable):
     ) -> List[T]:
 
         parameters = URLParameters([
-            URLParameter('season', season_id),
+            URLParameter('season', season.public_id),
             URLParameter('offset', offset),
             URLParameter('limit', limit),
             URLParameter('order_by', order_by.value),
