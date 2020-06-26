@@ -26,6 +26,11 @@ class Position(Decodable):
         return
 
     name = Immutable(lambda s: s._name)
+    lowercase_name = Immutable(lambda s: s._name.lower())
+
+    sole_category = Immutable(
+        lambda s: s._categories[0] if len(s._categories) == 1 else None
+    )
 
     @classmethod
     def decode(cls: Type[T], data: Any) -> T:
