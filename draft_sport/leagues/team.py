@@ -61,9 +61,7 @@ class Team(Decodable):
             picks_satisfying_requirement: List[Pick] = list()
 
             for pick in remaining_picks:
-                from draft_sport.fantasy.scores.player.score_card import ScoreCard
-                print(type(pick.score_card))
-                assert isinstance(pick.score_card, ScoreCard)
+
                 if pick.score_card.has_position_with_name(
                     name=requirement.position_name
                 ):
