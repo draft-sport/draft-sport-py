@@ -59,8 +59,9 @@ class Team(Decodable):
         for requirement in self._composition.position_requirements:
 
             picks_satisfying_requirement: List[Pick] = list()
+            potential_picks = list(remaining_picks)
 
-            for pick in remaining_picks:
+            for pick in potential_picks:
 
                 if pick.score_card.has_position_with_name(
                     name=requirement.position_name
@@ -80,8 +81,9 @@ class Team(Decodable):
         for category_requirement in self._composition.category_requirements:
 
             picks_satisfying_requirement: List[Pick] = list()
+            potential_picks = list(remaining_picks)
 
-            for pick in remaining_picks:
+            for pick in potential_picks:
                 if pick.score_card.has_position_in_category(
                     category=category_requirement.category
                 ):
