@@ -19,17 +19,22 @@ class Human(Decodable):
     def __init__(
         self,
         public_id: str,
-        email: CommunicationMethod
+        email: CommunicationMethod,
+        handle: str
     ) -> None:
 
         self._email = email
         self._public_id = public_id
+        self._handle = handle
 
         return
 
-    display_name: str = Immutable(lambda s: s._email.body.split('@')[0])
+    display_name: str = Immutable(
+        lambda s: s._handle if s._handle else s._email.body.split('@')[0]
+    )
     public_id: str = Immutable(lambda s: s._public_id)
     email: CommunicationMethod = Immutable(lambda s: s._email)
+    handle: str = Immutable(lambda s: s._handle)
 
     @classmethod
     def retrieve(
@@ -62,5 +67,6 @@ class Human(Decodable):
     def decode(cls: Type[T], data: Any) -> T:
         return cls(
             public_id=data['public_id'],
-            email=CommunicationMethod.decode(data['email'])
+            email=CommunicationMethod.decode(data['email']),
+            handle=data['handle']
         )
