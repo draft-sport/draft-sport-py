@@ -7,6 +7,7 @@ from nozomi import Immutable, Configuration, RequestCredentials
 from nozomi import Decodable, NozomiTime
 from typing import Optional, Type, TypeVar, Any, List
 from nozomi import URLParameter, URLParameters, HTTPMethod, ApiRequest
+from draft_sport.humans.human import Human
 from draft_sport.leagues.team import Team
 
 T = TypeVar('T', bound='League')
@@ -36,6 +37,10 @@ class League(Decodable):
     name = Immutable(lambda s: s._name)
     public_id = Immutable(lambda s: s._public_id)
     teams = Immutable(lambda s: s._teams)
+
+    def is_commissioned_by(self, human: Human) -> bool:
+        """Return True if the supplied human is the league commissioner"""
+        return human.public_id == self._commissioner_id
 
     @classmethod
     def retrieve(
