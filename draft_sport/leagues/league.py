@@ -8,7 +8,7 @@ from nozomi import Decodable, NozomiTime
 from typing import Optional, Type, TypeVar, Any, List
 from nozomi import URLParameter, URLParameters, HTTPMethod, ApiRequest
 from draft_sport.humans.human import Human
-from draft_sport.leagues.team import Team
+from draft_sport.leagues.team_summary import TeamSummary
 
 T = TypeVar('T', bound='League')
 
@@ -20,7 +20,7 @@ class League(Decodable):
     def __init__(
         self,
         public_id: str,
-        teams: List[Team],
+        teams: List[TeamSummary],
         commissioner_id: str,
         name: str,
         created: NozomiTime
@@ -75,7 +75,7 @@ class League(Decodable):
     def decode(cls: Type[T], data: Any) -> T:
         return cls(
             public_id=data['public_id'],
-            teams=Team.decode_many(data['teams']),
+            teams=TeamSummary.decode_many(data['teams']),
             commissioner_id=data['commissioner_id'],
             name=data['name'],
             created=NozomiTime.decode(data['created'])
