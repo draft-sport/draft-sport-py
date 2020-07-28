@@ -36,7 +36,7 @@ class Pick(Decodable):
         return cls(
             created=NozomiTime.decode(data['created']),
             manager_id=data['manager_id'],
-            score_card=Profile.decode(data['player']),
+            profile=Profile.decode(data['player']),
             league_id=data['league_id'],
             as_at=NozomiTime.decode(data['as_at'])
         )
