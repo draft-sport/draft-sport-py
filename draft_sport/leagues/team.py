@@ -6,6 +6,7 @@ author: hugh@blinkybeach.com
 from typing import List, Any, TypeVar, Type, Optional
 from nozomi import Immutable, Decodable, RequestCredentials, ApiRequest
 from nozomi import Configuration, URLParameter, URLParameters, HTTPMethod
+from nozomi import NozomiTime
 from draft_sport.leagues.composition import Composition
 from draft_sport.leagues.pick import Pick
 from draft_sport.leagues.filled_composition import FilledComposition
@@ -25,7 +26,8 @@ class Team(Decodable):
         manager_id: str,
         manager_display_name: str,
         name: Optional[str],
-        total_points: int,
+        as_at: NozomiTime,
+        as_at_round_sequence: int,
         composition: Composition
     ) -> None:
 
@@ -34,7 +36,8 @@ class Team(Decodable):
         self._manager_id = manager_id
         self._manager_display_name = manager_display_name
         self._name = name
-        self._total_points = total_points
+        self._as_at = as_at
+        self._as_at_round_sequence = as_at_round_sequence
         self._composition = composition
 
         return
@@ -45,6 +48,8 @@ class Team(Decodable):
     manager_display_name = Immutable(lambda s: s._manager_display_name)
     name = Immutable(lambda s: s._name)
     total_points = Immutable(lambda s: s._total_points)
+    as_at = Immutable(lambda s: s._as_at)
+    as_at_round_sequence = Immutable(lambda s: s._as_at_round_sequence)
 
     filled_composition = Immutable(
         lambda s: s._compute_filled_composition()
@@ -109,7 +114,8 @@ class Team(Decodable):
             manager_id=data['manager_id'],
             manager_display_name=data['manager_display_name'],
             name=data['name'],
-            total_points=data['total_points'],
+            as_at=NozomiTime.decode(data['as_at']),
+            as_at_round_sequence=data['as_at_round_sequence'],
             composition=Composition.decode(data['composition'])
         )
 
@@ -119,24 +125,28 @@ class Team(Decodable):
         league_id: str,
         manager_id: str,
         credentials: RequestCredentials,
-        configuration: Configuration
+        configuration: Configuration,
+        as_at_round: Optional[int] = None
     ) -> Optional[T]:
         """
         Return a Team in the supplied League, managed by the supplied Manager,
         if it exists.
         """
 
-        parameters = URLParameters([
+        parameters = [
             URLParameter('league', league_id),
             URLParameter('manager', manager_id)
-        ])
+        ]
+
+        if as_at_round:
+            parameters.append(URLParameter('as_at_round', as_at_round))
 
         request = ApiRequest(
             path=cls._PATH,
             method=HTTPMethod.GET,
             configuration=configuration,
             data=None,
-            url_parameters=parameters,
+            url_parameters=URLParameters(parameters),
             credentials=credentials
         )
 
