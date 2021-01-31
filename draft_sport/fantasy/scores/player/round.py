@@ -4,10 +4,17 @@ Player Round Points Module
 author: hugh@blinkybeach.com
 """
 from draft_sport.fantasy.scores.player.score import Score
-from typing import List, TypeVar, Type, Any
+from draft_sport.fantasy.scores.player.metrics import FantasyMetric
+from typing import List, TypeVar, Type, Any, Optional
 from nozomi import Decodable, Immutable
+from enum import Enum
 
 T = TypeVar('T', bound='Round')
+
+
+class SemanticRound(Enum):
+    LATEST = 1
+    FIRST = 2
 
 
 class Round(Decodable):
@@ -28,6 +35,18 @@ class Round(Decodable):
     scores = Immutable(lambda s: s._scores)
 
     total_points = Immutable(lambda s: sum([k.value for k in s._scores]))
+
+    def score_for_metric(
+        self,
+        metric: FantasyMetric
+    ) -> Optional[int]:
+
+        for score in self._scores:
+            if score.fantasy_metric == metric:
+                return score.value
+            continue
+
+        return None
 
     @classmethod
     def decode(cls: Type[T], data: Any) -> T:

@@ -6,7 +6,10 @@ author: hugh@blinkybeach.com
 from nozomi import Decodable, Immutable
 from draft_sport.fantasy.scores.player.round import Round
 from draft_sport.fantasy.scores.player.score import Score
-from typing import TypeVar, Type, Any, List, Dict, Set, Optional
+from draft_sport.fantasy.scores.player.metrics import FantasyMetric
+from draft_sport.fantasy.scores.player.round import SemanticRound
+from typing import TypeVar, Type, Any, List, Dict, Set, Optional, Union
+
 
 T = TypeVar('T', bound='Points')
 
@@ -43,7 +46,37 @@ class Points(Decodable):
 
     _all_metric_keys = Immutable(lambda s: s._compute_all_metric_keys())
 
-    def _compute_all_metric_keys(self) -> Set[str]:
+    def score_for_metric(
+        self,
+        metric: FantasyMetric,
+        in_round: Union[int, SemanticRound]
+    ) -> Optional[int]:
+
+        if len(self._rounds) < 0:
+            return None
+
+        def compute_index(intention: Union[int, SemanticRound]) -> int:
+
+            if isinstance(intention, SemanticRound):
+                if intention == SemanticRound.LATEST:
+                    return -1
+                if intention == SemanticRound.FIRST:
+                    return 0
+                pass
+
+            assert isinstance(intention, int)
+            return intention
+
+        rounds = sorted(self.rounds, key=lambda r: r.round_sequence)
+        index = compute_index(in_round)
+
+        if len(rounds) - 1 < index:
+            return None
+
+        target_round = rounds[index]
+        return target_round.score_for_metric(metric)
+
+    def _compute_all_metric_keys(self) -> List[str]:
         keys: Set[str] = set()
         for rou in self._rounds:
             for score in rou.scores:
@@ -77,12 +110,12 @@ class Points(Decodable):
                         scores.append(score)
                         found = True
                         break
-                    
+
                 if found is True:
                     break
 
                 scores.append(Score(
-                    fantasy_metric_name=key,
+                    fantasy_metric=FantasyMetric.decode(key),
                     score=0
                 ))
 
@@ -115,7 +148,7 @@ class Points(Decodable):
             for rou in self._rounds:
 
                 found = False
-                
+
                 for score in rou.scores:
                     if score.fantasy_metric_name == key:
                         metric_stats.append(score.value)

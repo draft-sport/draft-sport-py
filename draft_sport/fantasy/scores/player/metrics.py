@@ -3,7 +3,7 @@ Draft Sport Python
 Fantasy Metric Enumeration
 author: hugh@blinkybeach.com
 """
-from typing import TypeVar, Type
+from typing import TypeVar, Type, Any, List
 from enum import Enum
 
 Self = TypeVar('Self', bound='FantasyMetric')
@@ -44,11 +44,19 @@ class FantasyMetric(Enum):
     UNKNOWN = 'Unknown'
 
     @classmethod
+    def list_names(cls: Type[Self]) -> List[str]:
+        return sorted([m.value for m in cls if m.value != 'Unknown'])
+
+    @classmethod
     def decode(cls: Type[Self], data: Any) -> Self:
 
         try:
             result = FantasyMetric(data)
         except ValueError:
             return FantasyMetric.UNKNOWN
-        
+
         return result
+
+    @classmethod
+    def with_key(cls: Type[Self], key: str) -> Self:
+        return cls.decode(key)
