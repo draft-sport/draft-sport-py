@@ -15,3 +15,4 @@ dist/*
 *.egg-info
 deploy
 build/*
+pyvenv.cfg
